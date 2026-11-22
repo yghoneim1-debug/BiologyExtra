@@ -1,0 +1,1861 @@
+<!-- ... existing code ... -->
+  <title>Molecular Genetics — Interactive Practice</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    /* Executive Theme System: Burgundy (Default), Forest Sage, Ocean Slate, and single Dark Theme (White / Black) */
+    :root, [data-theme="burgundy"] {
+      --bg-page: #fbf8f9;
+      --bg-card: #ffffff;
+      --bg-subtle: #f5ebee;
+      --bg-muted: #eedce1;
+      --border-color: #e3c8d0;
+      --border-strong: #c99aa8;
+      --text-main: #1f0e14;
+      --text-secondary: #593340;
+      --text-muted: #8a5e6c;
+      --primary: #7a1c32;
+      --primary-hover: #611426;
+      --primary-fg: #ffffff;
+      --primary-soft: #f5ebee;
+      --primary-soft-border: #dcb4c0;
+      --primary-text: #7a1c32;
+      --table-header: #611426;
+      --svg-ink: #1f0e14;
+      --svg-accent: #9f1239;
+      --svg-fill: #fbf8f9;
+      --glow-color: rgba(122, 28, 50, 0.22);
+    }
+
+    [data-theme="forest"] {
+      --bg-page: #f6faf8;
+      --bg-card: #ffffff;
+      --bg-subtle: #ebf3ef;
+      --bg-muted: #dce9e2;
+      --border-color: #c2d9cd;
+      --border-strong: #93b8a5;
+      --text-main: #0e2118;
+      --text-secondary: #315242;
+      --text-muted: #5c7d6d;
+      --primary: #1b5e43;
+      --primary-hover: #134732;
+      --primary-fg: #ffffff;
+      --primary-soft: #e6f4ed;
+      --primary-soft-border: #9fd3b8;
+      --primary-text: #1b5e43;
+      --table-header: #134732;
+      --svg-ink: #0e2118;
+      --svg-accent: #b91c1c;
+      --svg-fill: #f6faf8;
+      --glow-color: rgba(27, 94, 67, 0.22);
+    }
+
+    [data-theme="ocean"] {
+      --bg-page: #f5f8fc;
+      --bg-card: #ffffff;
+      --bg-subtle: #eaf0f8;
+      --bg-muted: #dae4f2;
+      --border-color: #bfd0e6;
+      --border-strong: #8eaad1;
+      --text-main: #0d1b2e;
+      --text-secondary: #2d4769;
+      --text-muted: #5a7699;
+      --primary: #1e40af;
+      --primary-hover: #1e3a8a;
+      --primary-fg: #ffffff;
+      --primary-soft: #e8effc;
+      --primary-soft-border: #a5bdfa;
+      --primary-text: #1e40af;
+      --table-header: #172554;
+      --svg-ink: #0d1b2e;
+      --svg-accent: #dc2626;
+      --svg-fill: #f5f8fc;
+      --glow-color: rgba(30, 64, 175, 0.22);
+    }
+
+    /* Single Monochrome Dark Theme: White / Black */
+    [data-theme="white-black"] {
+      --bg-page: #09090b;
+      --bg-card: #121215;
+      --bg-subtle: #18181b;
+      --bg-muted: #27272a;
+      --border-color: #27272a;
+      --border-strong: #3f3f46;
+      --text-main: #fafafa;
+      --text-secondary: #d4d4d8;
+      --text-muted: #a1a1aa;
+      --primary: #ffffff;
+      --primary-hover: #e4e4e7;
+      --primary-fg: #09090b;
+      --primary-soft: #1f1f23;
+      --primary-soft-border: #52525b;
+      --primary-text: #ffffff;
+      --table-header: #18181b;
+      --svg-ink: #fafafa;
+      --svg-accent: #ffffff;
+      --svg-fill: #18181b;
+      --glow-color: rgba(255, 255, 255, 0.2);
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      user-select: none;
+      transition: background-color 0.35s cubic-bezier(0.22, 1, 0.36, 1), color 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Theme Utility Classes */
+    .t-bg-page { background-color: var(--bg-page); }
+    .t-bg-card { background-color: var(--bg-card); transition: background-color 0.3s ease, border-color 0.3s ease; }
+    .t-bg-subtle { background-color: var(--bg-subtle); transition: background-color 0.3s ease, border-color 0.3s ease; }
+    .t-bg-muted { background-color: var(--bg-muted); }
+    .t-border { border-color: var(--border-color); }
+    .t-border-strong { border-color: var(--border-strong); }
+    .t-text-main { color: var(--text-main); }
+    .t-text-secondary { color: var(--text-secondary); }
+    .t-text-muted { color: var(--text-muted); }
+    .t-primary-bg { background-color: var(--primary); color: var(--primary-fg); }
+    .t-primary-bg:hover { background-color: var(--primary-hover); }
+    .t-primary-soft { background-color: var(--primary-soft); border-color: var(--primary-soft-border); color: var(--primary-text); }
+    .t-primary-text { color: var(--primary-text); }
+    .t-table-header { background-color: var(--table-header); color: #ffffff; }
+
+    /* Smooth Choreographed Keyframe Animations */
+    @keyframes fadeSlideUp {
+      0% { opacity: 0; transform: translateY(16px) scale(0.985); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes cardStaggerIn {
+      0% { opacity: 0; transform: translateY(20px) scale(0.97); }
+      100% { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    @keyframes springLand {
+      0% { transform: scale(0.88); opacity: 0.6; }
+      55% { transform: scale(1.035); opacity: 1; }
+      80% { transform: scale(0.99); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes shakeWrong {
+      0%, 100% { transform: translateX(0); }
+      20% { transform: translateX(-6px); }
+      40% { transform: translateX(6px); }
+      60% { transform: translateX(-4px); }
+      80% { transform: translateX(4px); }
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { box-shadow: 0 0 0 3px var(--glow-color); }
+      50% { box-shadow: 0 0 0 6px var(--glow-color); }
+    }
+
+    @keyframes subtleFloat {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-4px); }
+    }
+
+    @keyframes confettiFall {
+      0% { transform: translateY(-10px) rotate(0deg) scale(1); opacity: 1; }
+      100% { transform: translateY(130px) rotate(360deg) scale(0.4); opacity: 0; }
+    }
+
+    .animate-view-enter {
+      animation: fadeSlideUp 0.38s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .animate-card-stagger {
+      opacity: 0;
+      animation: cardStaggerIn 0.44s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+
+    .animate-float {
+      animation: subtleFloat 3.6s ease-in-out infinite;
+    }
+
+    .animate-pop {
+      animation: springLand 0.34s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+    }
+
+    .animate-shake {
+      animation: shakeWrong 0.38s cubic-bezier(0.36, 0.07, 0.19, 0.97);
+    }
+
+    .dashboard-card {
+      transition: transform 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.26s cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 0.26s ease;
+    }
+
+    .dashboard-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: 0 14px 30px -10px var(--glow-color);
+    }
+
+    .draggable-card {
+      cursor: grab;
+      transition: transform 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                  box-shadow 0.2s cubic-bezier(0.22, 1, 0.36, 1),
+                  border-color 0.2s ease,
+                  background-color 0.25s ease,
+                  opacity 0.2s ease;
+      touch-action: manipulation;
+    }
+
+    .draggable-card:hover {
+      transform: translateY(-2px) scale(1.01);
+      box-shadow: 0 8px 20px -6px rgba(0, 0, 0, 0.14);
+    }
+
+    .draggable-card:active {
+      cursor: grabbing;
+      transform: scale(0.98);
+    }
+
+    .draggable-card.dragging {
+      opacity: 0.4;
+      transform: scale(0.95) rotate(-1.5deg);
+    }
+
+    .drop-slot {
+      transition: all 0.22s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .drop-slot.drag-over {
+      background-color: var(--primary-soft) !important;
+      border-color: var(--primary) !important;
+      transform: scale(1.015);
+      animation: pulseGlow 1.1s infinite ease-in-out;
+    }
+
+    .confetti-piece {
+      position: fixed;
+      pointer-events: none;
+      z-index: 9999;
+      border-radius: 3px;
+      animation: confettiFall 0.95s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 999px; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col" data-theme="burgundy">
+
+  <!-- ======================================================================= -->
+  <!-- VIEW 1: MINIMALIST MAIN LANDING PAGE (ZERO CLUTTER)                     -->
+  <!-- ======================================================================= -->
+  <section id="landing-screen" class="flex-1 flex flex-col justify-between min-h-screen animate-view-enter">
+    <!-- Minimal Top Bar -->
+    <div class="max-w-6xl w-full mx-auto px-6 pt-6 flex items-center justify-between">
+      <div class="flex items-center gap-2.5">
+        <div class="w-9 h-9 rounded-xl t-primary-bg flex items-center justify-center font-bold text-base shadow-xs">
+          🧬
+        </div>
+        <span class="font-extrabold text-base tracking-tight t-text-main">BioMastery</span>
+      </div>
+
+      <div class="flex items-center gap-2">
+        <button onclick="toggleSound()" id="landing-sound-btn"
+                title="Toggle Sound Effects"
+                class="w-9 h-9 rounded-xl t-bg-card t-text-main border t-border hover:opacity-85 transition flex items-center justify-center text-sm shadow-2xs">
+          🔊
+        </button>
+        <button onclick="openOptionsModal()"
+                class="px-3.5 py-2 rounded-xl text-xs font-semibold t-bg-card t-text-main border t-border hover:opacity-85 shadow-2xs transition flex items-center gap-1.5">
+          <span>⚙️</span>
+          <span>Options</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Clean Centered Hero -->
+    <div class="max-w-xl w-full mx-auto px-6 py-12 text-center">
+      <div class="inline-flex items-center justify-center w-16 h-16 rounded-3xl t-primary-soft border text-3xl mb-6 shadow-xs animate-float">
+        🧬
+      </div>
+
+      <h1 class="text-4xl sm:text-5xl font-extrabold tracking-tight t-text-main mb-3">
+        Molecular Genetics
+      </h1>
+
+      <p class="text-sm sm:text-base font-medium t-text-muted mb-9">
+        Interactive Exam Practice &bull; 17 Marks
+      </p>
+
+      <div class="flex flex-wrap items-center justify-center gap-3">
+        <button onclick="openDashboard()"
+                class="group px-9 py-4 rounded-2xl text-sm sm:text-base font-bold t-primary-bg shadow-lg hover:shadow-xl transform hover:-translate-y-0.5 active:translate-y-0 transition-all flex items-center gap-2.5">
+          <span>Start Practice</span>
+          <span class="transition-transform duration-200 group-hover:translate-x-1">→</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="h-10"></div>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- VIEW 2: ANIMATED QUESTION DASHBOARD                                     -->
+  <!-- ======================================================================= -->
+  <section id="dashboard-screen" class="hidden flex-1 flex flex-col min-h-screen">
+    <!-- Dashboard Top Header -->
+    <header class="sticky top-0 z-40 t-bg-card/95 backdrop-blur-md border-b t-border">
+      <div class="max-w-6xl mx-auto px-5 py-3 flex items-center justify-between gap-3">
+        <button onclick="goToLanding()"
+                class="px-3.5 py-2 rounded-xl text-xs font-bold t-bg-subtle t-text-main border t-border hover:opacity-85 transition flex items-center gap-1.5">
+          <span>←</span>
+          <span>Home</span>
+        </button>
+
+        <span class="font-extrabold text-sm tracking-tight t-text-main">Practice Dashboard</span>
+
+        <div class="flex items-center gap-2">
+          <button onclick="toggleSound()" id="dashboard-sound-btn"
+                  title="Toggle Sound Effects"
+                  class="w-9 h-9 rounded-xl t-bg-subtle t-text-main border t-border hover:opacity-85 transition flex items-center justify-center text-xs">
+            🔊
+          </button>
+          <button onclick="openOptionsModal()"
+                  class="px-3.5 py-2 rounded-xl text-xs font-semibold t-bg-subtle t-text-main border t-border hover:opacity-85 transition flex items-center gap-1.5">
+            <span>⚙️</span>
+            <span class="hidden sm:inline">Options</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Dashboard Main Content -->
+    <main id="dashboard-main" class="flex-1 max-w-6xl w-full mx-auto px-5 py-8">
+      <!-- Overall Mastery Summary Card -->
+      <div class="t-bg-card rounded-3xl border t-border p-6 sm:p-7 mb-7 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-5 animate-view-enter">
+        <div class="flex-1">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-extrabold uppercase tracking-wider t-text-muted">Overall Progress</span>
+            <span id="dashboard-total-score" class="text-sm font-extrabold t-primary-text">0.0 / 17.0 Marks</span>
+          </div>
+          <div class="w-full h-2.5 rounded-full t-bg-subtle overflow-hidden border t-border">
+            <div id="dashboard-total-bar" class="h-full t-primary-bg rounded-full transition-all duration-500 ease-out" style="width: 0%;"></div>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2.5 shrink-0">
+          <button id="dashboard-reset-btn" onclick="resetAllQuestions(true)"
+                  class="px-4 py-2.5 rounded-xl text-xs font-bold t-bg-subtle t-text-secondary border t-border hover:opacity-85 transition flex items-center gap-1.5">
+            <span>↺</span>
+            <span>Reset All</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Staggered Animated Grid of 5 Question Cards -->
+      <div id="dashboard-cards-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <!-- Populated dynamically via JS -->
+      </div>
+    </main>
+  </section>
+
+  <!-- ======================================================================= -->
+  <!-- VIEW 3: FOCUSED PRACTICE WORKSPACE                                      -->
+  <!-- ======================================================================= -->
+  <div id="practice-screen" class="hidden flex-1 flex flex-col">
+    <!-- Single-Row Minimalist Header -->
+    <header class="sticky top-0 z-40 t-bg-card/95 backdrop-blur-md border-b t-border">
+      <div class="max-w-7xl mx-auto px-4 py-2.5 flex items-center justify-between gap-3">
+        <!-- Dashboard Back + Question Pills -->
+        <div class="flex items-center gap-2 overflow-x-auto py-0.5">
+          <button onclick="openDashboard()"
+                  class="px-3 py-1.5 rounded-xl text-xs font-bold t-bg-subtle t-text-main border t-border hover:opacity-80 transition shrink-0 flex items-center gap-1">
+            <span>←</span>
+            <span>Dashboard</span>
+          </button>
+          <div class="h-4 w-px t-bg-muted shrink-0"></div>
+          <nav id="question-tabs" class="flex items-center gap-1.5">
+            <!-- Tabs injected via JS -->
+          </nav>
+        </div>
+
+        <!-- Right Controls: Score Pill, Sound, Options -->
+        <div class="flex items-center gap-2 shrink-0">
+          <div class="t-primary-soft border px-3 py-1.5 rounded-xl text-xs font-extrabold">
+            <span id="total-score-desktop">0.0 / 17</span>
+          </div>
+
+          <button onclick="toggleSound()" id="header-sound-btn"
+                  title="Toggle Sound Effects"
+                  class="w-8 h-8 rounded-xl t-bg-subtle t-text-main border t-border hover:opacity-80 transition flex items-center justify-center text-xs">
+            🔊
+          </button>
+
+          <button onclick="openOptionsModal()"
+                  title="Options & Themes"
+                  class="px-3 py-1.5 rounded-xl text-xs font-semibold t-bg-subtle t-text-main border t-border hover:opacity-80 transition flex items-center gap-1.5">
+            <span>⚙️</span>
+            <span class="hidden sm:inline">Options</span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Workspace -->
+    <main id="practice-main" class="flex-1 max-w-7xl w-full mx-auto px-4 py-6 animate-view-enter">
+      <!-- Clean Question Title Bar -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-5">
+        <div>
+          <div class="flex items-center gap-2 mb-1">
+            <span id="q-badge" class="px-2.5 py-0.5 rounded-lg text-xs font-extrabold t-primary-bg">Q13</span>
+            <span id="q-marks-badge" class="text-xs font-semibold t-text-muted">5 marks</span>
+            <span id="q-score-pill" class="px-2 py-0.5 rounded-lg text-xs font-bold t-primary-soft border">0.0 / 5.0</span>
+          </div>
+          <h2 id="q-title" class="text-base sm:text-xl font-bold t-text-main leading-snug">
+            Differentiate between DNA replication and transcription.
+          </h2>
+        </div>
+
+        <!-- Compact Action Buttons -->
+        <div class="flex flex-wrap items-center gap-2 shrink-0">
+          <button onclick="shuffleCurrentBank()" class="px-3 py-2 rounded-xl text-xs font-semibold t-bg-card t-text-secondary border t-border hover:opacity-85 transition">
+            🔀 Shuffle
+          </button>
+          <button id="check-btn" onclick="checkCurrentQuestion()" class="px-3.5 py-2 rounded-xl text-xs font-bold bg-emerald-600 hover:bg-emerald-700 text-white shadow-2xs transition">
+            ✓ Check
+          </button>
+          <button onclick="showAllAnswers()" class="px-3 py-2 rounded-xl text-xs font-semibold t-bg-card t-text-secondary border t-border hover:opacity-85 transition">
+            👁️ Show Key
+          </button>
+          <button onclick="resetCurrentQuestion()" class="px-3.5 py-2 rounded-xl text-xs font-bold t-bg-card t-text-main border t-border hover:opacity-85 transition">
+            ↺ Reset
+          </button>
+          <button id="next-q-btn" onclick="goToNextQuestion()" class="px-3.5 py-2 rounded-xl text-xs font-bold t-primary-bg shadow-2xs transition">
+            Next Question →
+          </button>
+        </div>
+      </div>
+
+      <!-- Subtle Toast Feedback -->
+      <div id="feedback-banner" class="hidden mb-4 px-4 py-2.5 rounded-xl border text-xs sm:text-sm font-semibold flex items-center justify-between animate-view-enter">
+        <span id="feedback-banner-text"></span>
+        <button onclick="document.getElementById('feedback-banner').classList.add('hidden')" class="opacity-60 hover:opacity-100 font-bold px-1.5">✕</button>
+      </div>
+
+      <!-- Spacious Two-Column Grid -->
+      <div id="workspace-layout" class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+        <!-- Table / Diagram Stage -->
+        <div id="question-stage" class="xl:col-span-8 t-bg-card rounded-2xl border t-border shadow-2xs p-4 sm:p-6 overflow-x-auto">
+          <!-- Dynamic Table or SVG Diagram rendered here -->
+        </div>
+
+        <!-- Compact Answer Bank -->
+        <div class="xl:col-span-4 t-bg-card rounded-2xl border t-border shadow-2xs p-4 xl:sticky xl:top-20">
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-bold t-text-main text-xs uppercase tracking-wider">Answer Bank</span>
+            <span id="bank-count" class="text-xs font-bold px-2.5 py-0.5 rounded-full t-primary-soft border">0</span>
+          </div>
+
+          <div id="selected-hint" class="hidden mb-2.5 text-xs font-semibold t-primary-soft border rounded-xl px-3 py-2 text-center animate-pop">
+            Tap any slot to place selected card
+          </div>
+
+          <div id="answer-bank"
+               ondragover="handleDragOver(event)"
+               ondragleave="handleDragLeave(event)"
+               ondrop="handleDropToBank(event)"
+               class="min-h-[140px] max-h-[66vh] overflow-y-auto flex flex-col gap-2 p-2 rounded-xl t-bg-subtle border border-dashed t-border">
+            <!-- Draggable Answer Cards injected here -->
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- ======================================================================= -->
+  <!-- CLEAN OPTIONS MODAL                                                     -->
+  <!-- ======================================================================= -->
+  <div id="options-modal" onclick="closeOptionsModal(event)" class="hidden fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+    <div onclick="event.stopPropagation()" class="t-bg-card t-text-main border t-border rounded-3xl shadow-2xl max-w-md w-full p-6 animate-pop">
+      <div class="flex items-center justify-between pb-3.5 mb-5 border-b t-border">
+        <h3 class="text-base font-extrabold">Options</h3>
+        <button onclick="closeOptionsModal()" class="w-8 h-8 rounded-full t-bg-subtle hover:opacity-80 flex items-center justify-center font-bold text-xs">✕</button>
+      </div>
+
+      <!-- Theme Picker (Burgundy Default, Forest Sage, Ocean Slate, and ONLY 1 Dark Theme: White / Black) -->
+      <div class="mb-5">
+        <label class="block text-[11px] font-extrabold uppercase tracking-wider t-text-muted mb-2.5">
+          Theme
+        </label>
+        <div id="theme-options-grid" class="grid grid-cols-1 gap-2">
+          <!-- Theme cards rendered via JS -->
+        </div>
+      </div>
+
+      <!-- Grading Mode & Sound Toggle -->
+      <div class="grid grid-cols-2 gap-2.5 mb-5">
+        <div>
+          <label class="block text-[11px] font-extrabold uppercase tracking-wider t-text-muted mb-2">
+            Feedback Mode
+          </label>
+          <div class="flex rounded-xl t-bg-subtle p-1 border t-border">
+            <button id="modal-mode-instant" onclick="setMode('instant')" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition">
+              Instant
+            </button>
+            <button id="modal-mode-exam" onclick="setMode('exam')" class="flex-1 py-1.5 rounded-lg text-xs font-bold transition">
+              Exam
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <label class="block text-[11px] font-extrabold uppercase tracking-wider t-text-muted mb-2">
+            Sound Effects
+          </label>
+          <button id="modal-sound-toggle" onclick="toggleSound()"
+                  class="w-full py-2 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5">
+            <span>🔊</span>
+            <span>On</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex items-center justify-between gap-3 pt-4 border-t t-border">
+        <button onclick="resetAllQuestions(true); closeOptionsModal();"
+                class="px-4 py-2 rounded-xl text-xs font-bold bg-rose-500/10 text-rose-500 border border-rose-500/25 hover:bg-rose-500/20 transition">
+          ↺ Reset All Progress
+        </button>
+
+        <button onclick="closeOptionsModal()"
+                class="px-6 py-2 rounded-xl text-xs font-bold t-primary-bg shadow-2xs transition">
+          Done
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 0. WEB AUDIO API SOUND ENGINE (PROCEDURAL UI SOUNDS)
+    // =========================================================================
+    let soundEnabled = localStorage.getItem('bio_practice_sound') !== 'false';
+    let audioCtx = null;
+
+    function getAudioContext() {
+      if (!audioCtx) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (AudioContextClass) {
+          audioCtx = new AudioContextClass();
+        }
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume();
+      }
+      return audioCtx;
+    }
+
+    function playSound(type) {
+      if (!soundEnabled) return;
+      const ctx = getAudioContext();
+      if (!ctx) return;
+
+      const now = ctx.currentTime;
+
+      if (type === 'pickup') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(360, now);
+        osc.frequency.exponentialRampToValueAtTime(560, now + 0.065);
+        gain.gain.setValueAtTime(0.08, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.075);
+      } else if (type === 'drop') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(280, now);
+        osc.frequency.exponentialRampToValueAtTime(160, now + 0.055);
+        gain.gain.setValueAtTime(0.1, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.06);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.065);
+      } else if (type === 'correct') {
+        [523.25, 659.25].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          const start = now + idx * 0.065;
+          osc.frequency.setValueAtTime(freq, start);
+          gain.gain.setValueAtTime(0.001, start);
+          gain.gain.linearRampToValueAtTime(0.11, start + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.001, start + 0.24);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(start);
+          osc.stop(start + 0.25);
+        });
+      } else if (type === 'wrong') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(195, now);
+        osc.frequency.exponentialRampToValueAtTime(125, now + 0.16);
+        gain.gain.setValueAtTime(0.11, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.17);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.18);
+      } else if (type === 'complete') {
+        [523.25, 659.25, 783.99, 1046.5].forEach((freq, idx) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          const start = now + idx * 0.07;
+          osc.frequency.setValueAtTime(freq, start);
+          gain.gain.setValueAtTime(0.001, start);
+          gain.gain.linearRampToValueAtTime(0.11, start + 0.015);
+          gain.gain.exponentialRampToValueAtTime(0.001, start + 0.32);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(start);
+          osc.stop(start + 0.34);
+        });
+      } else if (type === 'click') {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(480, now);
+        gain.gain.setValueAtTime(0.05, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start(now);
+        osc.stop(now + 0.045);
+      }
+    }
+
+    function updateSoundButtonsUI() {
+      const icon = soundEnabled ? '🔊' : '🔇';
+      const lBtn = document.getElementById('landing-sound-btn');
+      const dBtn = document.getElementById('dashboard-sound-btn');
+      const hBtn = document.getElementById('header-sound-btn');
+      const mBtn = document.getElementById('modal-sound-toggle');
+
+      if (lBtn) lBtn.textContent = icon;
+      if (dBtn) dBtn.textContent = icon;
+      if (hBtn) hBtn.textContent = icon;
+      if (mBtn) {
+        mBtn.className = `w-full py-2 px-3 rounded-xl border text-xs font-bold transition flex items-center justify-center gap-1.5 ${
+          soundEnabled ? 't-primary-soft border-current' : 't-bg-subtle t-border t-text-muted'
+        }`;
+        mBtn.innerHTML = `<span>${icon}</span><span>${soundEnabled ? 'Sound On' : 'Muted'}</span>`;
+      }
+    }
+
+    function toggleSound() {
+      soundEnabled = !soundEnabled;
+      localStorage.setItem('bio_practice_sound', soundEnabled);
+      updateSoundButtonsUI();
+      if (soundEnabled) playSound('pickup');
+    }
+
+    function spawnConfetti() {
+      const colors = currentTheme === 'white-black'
+        ? ['#ffffff', '#a1a1aa', '#10b981', '#e4e4e7']
+        : ['#7a1c32', '#be123c', '#10b981', '#f59e0b'];
+      for (let i = 0; i < 28; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = `${20 + Math.random() * 60}vw`;
+        piece.style.top = `${18 + Math.random() * 20}vh`;
+        piece.style.width = `${6 + Math.random() * 6}px`;
+        piece.style.height = `${6 + Math.random() * 6}px`;
+        piece.style.backgroundColor = colors[i % colors.length];
+        piece.style.animationDelay = `${Math.random() * 0.18}s`;
+        document.body.appendChild(piece);
+        setTimeout(() => piece.remove(), 1200);
+      }
+    }
+
+    // =========================================================================
+    // 1. STREAMLINED THEMES (BURGUNDY DEFAULT + 2 LIGHT + ONLY 1 DARK THEME)
+    // =========================================================================
+    const THEMES = [
+      {
+        id: 'burgundy',
+        name: 'Burgundy',
+        tag: 'Default',
+        swatches: ['#7a1c32', '#fbf8f9', '#e3c8d0']
+      },
+      {
+        id: 'forest',
+        name: 'Forest Sage',
+        tag: 'Light',
+        swatches: ['#1b5e43', '#f6faf8', '#c2d9cd']
+      },
+      {
+        id: 'ocean',
+        name: 'Ocean Slate',
+        tag: 'Light',
+        swatches: ['#1e40af', '#f5f8fc', '#bfd0e6']
+      },
+      {
+        id: 'white-black',
+        name: 'White / Black',
+        tag: 'Dark',
+        swatches: ['#09090b', '#ffffff', '#3f3f46']
+      }
+    ];
+
+    let currentTheme = localStorage.getItem('bio_practice_theme') || 'burgundy';
+    if (!THEMES.some(t => t.id === currentTheme)) {
+      currentTheme = 'burgundy';
+    }
+
+    function applyTheme(themeId) {
+      currentTheme = themeId;
+      document.body.setAttribute('data-theme', themeId);
+      localStorage.setItem('bio_practice_theme', themeId);
+      renderThemeOptions();
+      if (!document.getElementById('practice-screen').classList.contains('hidden')) {
+        renderCurrentQuestion();
+      }
+    }
+
+    function renderThemeOptions() {
+      const container = document.getElementById('theme-options-grid');
+      if (!container) return;
+
+      container.innerHTML = THEMES.map(theme => {
+        const isActive = theme.id === currentTheme;
+        return `
+          <button onclick="playSound('click'); applyTheme('${theme.id}')"
+                  class="px-3.5 py-2.5 rounded-2xl border-2 text-left transition flex items-center justify-between gap-2 ${
+                    isActive
+                      ? 't-primary-soft border-current shadow-2xs'
+                      : 't-bg-subtle t-border hover:opacity-90'
+                  }">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-bold">${theme.name}</span>
+              ${theme.tag ? `<span class="text-[10px] font-semibold px-1.5 py-0.5 rounded-md t-bg-card t-text-muted border t-border">${theme.tag}</span>` : ''}
+            </div>
+            <div class="flex items-center -space-x-1.5 shrink-0">
+              ${theme.swatches.map(hex => `<span class="w-4 h-4 rounded-full border border-black/25" style="background-color: ${hex};"></span>`).join('')}
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function openOptionsModal() {
+      playSound('click');
+      renderThemeOptions();
+      updateModalModeButtons();
+      updateSoundButtonsUI();
+      document.getElementById('options-modal').classList.remove('hidden');
+    }
+
+    function closeOptionsModal(event) {
+      if (!event || event.target.id === 'options-modal') {
+        document.getElementById('options-modal').classList.add('hidden');
+      }
+    }
+
+    // =========================================================================
+    // 2. EXACT EXAM DATA FOR ALL 5 QUESTIONS (Q13, Q14, Q18, Q19, Q20)
+    // =========================================================================
+    const QUESTIONS = [
+      {
+        id: 'Q13',
+        dashboardTitle: 'DNA Replication vs. Transcription',
+        categoryLabel: 'Comparison Table',
+        categoryIcon: '📊',
+        tabLabel: 'Q13',
+        title: 'Differentiate between DNA replication and transcription using the features below.',
+        marks: 5,
+        markPerSlot: 0.5,
+        type: 'table',
+        headers: ['Feature', 'DNA replication', 'Transcription'],
+        rows: [
+          {
+            feature: 'Purpose',
+            slots: [
+              { id: 'q13_r1_c1', answer: 'DNA replication copies the genetic material before cell division.' },
+              { id: 'q13_r1_c2', answer: 'Transcription produces an RNA copy of a gene for gene expression.' }
+            ]
+          },
+          {
+            feature: 'Product',
+            slots: [
+              { id: 'q13_r2_c1', answer: 'One parental DNA molecule produces two daughter DNA molecules.' },
+              { id: 'q13_r2_c2', answer: 'A transcribed gene produces an RNA transcript.' }
+            ]
+          },
+          {
+            feature: 'Template strands',
+            slots: [
+              { id: 'q13_r3_c1', answer: 'Both parental DNA strands act as templates for new DNA synthesis.' },
+              { id: 'q13_r3_c2', answer: 'Only one DNA strand acts as the template for a particular gene.' }
+            ]
+          },
+          {
+            feature: 'Main enzyme',
+            slots: [
+              { id: 'q13_r4_c1', answer: 'DNA polymerase joins complementary DNA nucleotides to form new DNA strands.' },
+              { id: 'q13_r4_c2', answer: 'RNA polymerase joins complementary RNA nucleotides to form an RNA strand.' }
+            ]
+          },
+          {
+            feature: 'Nucleotides used',
+            slots: [
+              { id: 'q13_r5_c1', answer: 'DNA nucleotides contain deoxyribose and the bases A, T, G and C.' },
+              { id: 'q13_r5_c2', answer: 'RNA nucleotides contain ribose and the bases A, U, G and C.' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'Q14',
+        dashboardTitle: 'Bacterial vs. Eukaryotic Replication',
+        categoryLabel: 'Comparison Table',
+        categoryIcon: '📊',
+        tabLabel: 'Q14',
+        title: 'Compare replication in a typical bacterial chromosome and a eukaryotic nuclear chromosome.',
+        marks: 3,
+        markPerSlot: 0.5,
+        type: 'table',
+        headers: ['Feature', 'Typical bacterial chromosome', 'Eukaryotic nuclear chromosome'],
+        rows: [
+          {
+            feature: 'DNA shape',
+            slots: [
+              { id: 'q14_r1_c1', answer: 'The chromosome usually consists of a circular DNA molecule.' },
+              { id: 'q14_r1_c2', answer: 'Each chromosome contains a linear DNA molecule.' }
+            ]
+          },
+          {
+            feature: 'Origins per chromosome',
+            slots: [
+              { id: 'q14_r2_c1', answer: 'Replication usually begins at one origin.' },
+              { id: 'q14_r2_c2', answer: 'Replication begins at multiple origins.' }
+            ]
+          },
+          {
+            feature: 'Location in the cell',
+            slots: [
+              { id: 'q14_r3_c1', answer: 'Replication occurs in the nucleoid region of the cytoplasm.' },
+              { id: 'q14_r3_c2', answer: 'Replication occurs inside the nucleus.' }
+            ]
+          }
+        ]
+      },
+      {
+        id: 'Q18',
+        dashboardTitle: 'Bacteriophage Structure',
+        categoryLabel: 'Diagram Labeling',
+        categoryIcon: '🔬',
+        tabLabel: 'Q18',
+        title: 'Identify the six parts marked A–F in the bacteriophage diagram.',
+        marks: 3,
+        markPerSlot: 0.5,
+        type: 'diagram',
+        diagramKey: 'bacteriophage',
+        slots: [
+          { id: 'q18_A', label: 'A', answer: 'Capsid or protein coat' },
+          { id: 'q18_B', label: 'B', answer: 'DNA' },
+          { id: 'q18_C', label: 'C', answer: 'Collar' },
+          { id: 'q18_D', label: 'D', answer: 'Tail sheath' },
+          { id: 'q18_E', label: 'E', answer: 'Base plate' },
+          { id: 'q18_F', label: 'F', answer: 'Tail fibres' }
+        ]
+      },
+      {
+        id: 'Q19',
+        dashboardTitle: 'DNA Replication Fork',
+        categoryLabel: 'Diagram Labeling',
+        categoryIcon: '🔬',
+        tabLabel: 'Q19',
+        title: 'Identify the six parts marked A–F in the DNA replication diagram.',
+        marks: 3,
+        markPerSlot: 0.5,
+        type: 'diagram',
+        diagramKey: 'replication',
+        slots: [
+          { id: 'q19_A', label: 'A', answer: 'Helicase' },
+          { id: 'q19_B', label: 'B', answer: 'DNA polymerase' },
+          { id: 'q19_C', label: 'C', answer: 'Leading strand' },
+          { id: 'q19_D', label: 'D', answer: 'Lagging strand' },
+          { id: 'q19_E', label: 'E', answer: 'Okazaki fragment' },
+          { id: 'q19_F', label: 'F', answer: 'RNA primer' }
+        ]
+      },
+      {
+        id: 'Q20',
+        dashboardTitle: 'Transcription Bubble',
+        categoryLabel: 'Diagram Labeling',
+        categoryIcon: '🔬',
+        tabLabel: 'Q20',
+        title: 'Identify the six parts marked A–F in the transcription diagram.',
+        marks: 3,
+        markPerSlot: 0.5,
+        type: 'diagram',
+        diagramKey: 'transcription',
+        slots: [
+          { id: 'q20_A', label: 'A', answer: 'Promoter' },
+          { id: 'q20_B', label: 'B', answer: 'RNA polymerase' },
+          { id: 'q20_C', label: 'C', answer: 'DNA template strand' },
+          { id: 'q20_D', label: 'D', answer: 'DNA non-template strand' },
+          { id: 'q20_E', label: 'E', answer: 'Growing RNA transcript' },
+          { id: 'q20_F', label: 'F', answer: 'Free RNA nucleotides' }
+        ]
+      }
+    ];
+
+    // =========================================================================
+    // 3. APPLICATION STATE & HELPERS
+    // =========================================================================
+    let currentQuestionIndex = 0;
+    let feedbackMode = 'instant';
+    let draggedCardId = null;
+    let selectedCardId = null;
+    const appState = {};
+
+    function shuffleArray(array) {
+      const arr = [...array];
+      for (let i = arr.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [arr[i], arr[j]] = [arr[j], arr[i]];
+      }
+      return arr;
+    }
+
+    function getAllSlots(q) {
+      return q.type === 'table' ? q.rows.flatMap(r => r.slots) : q.slots;
+    }
+
+    function initQuestionState(q) {
+      const allSlots = getAllSlots(q);
+      const cards = {};
+      const cardIds = [];
+
+      allSlots.forEach((slot, idx) => {
+        const cardId = `${q.id}_card_${idx}`;
+        cards[cardId] = { id: cardId, text: slot.answer, correctSlotId: slot.id };
+        cardIds.push(cardId);
+      });
+
+      appState[q.id] = {
+        bankOrder: shuffleArray(cardIds),
+        placements: {},
+        checked: false,
+        cards
+      };
+    }
+
+    QUESTIONS.forEach(initQuestionState);
+
+    function isSlotCorrect(q, slot) {
+      const placedCardId = appState[q.id].placements[slot.id];
+      if (!placedCardId) return null;
+      const card = appState[q.id].cards[placedCardId];
+      return card && card.text === slot.answer;
+    }
+
+    function getQuestionScore(q) {
+      let correctCount = 0;
+      getAllSlots(q).forEach(slot => {
+        if (isSlotCorrect(q, slot) === true) correctCount++;
+      });
+      return correctCount * q.markPerSlot;
+    }
+
+    function getTotalScore() {
+      return QUESTIONS.reduce((sum, q) => sum + getQuestionScore(q), 0);
+    }
+
+    function updateScoresUI() {
+      const currentQ = QUESTIONS[currentQuestionIndex];
+      const qScore = getQuestionScore(currentQ);
+      const totalScore = getTotalScore();
+
+      document.getElementById('q-score-pill').textContent = `${qScore.toFixed(1)} / ${currentQ.marks.toFixed(1)}`;
+      document.getElementById('total-score-desktop').textContent = `${totalScore.toFixed(1)} / 17`;
+      renderTabs();
+      renderDashboardCards(false);
+    }
+
+    // =========================================================================
+    // 4. THREE-VIEW NAVIGATION (LANDING <-> DASHBOARD <-> WORKSPACE)
+    // =========================================================================
+    function showOnlyView(viewId) {
+      ['landing-screen', 'dashboard-screen', 'practice-screen'].forEach(id => {
+        const el = document.getElementById(id);
+        if (id === viewId) {
+          el.classList.remove('hidden');
+        } else {
+          el.classList.add('hidden');
+        }
+      });
+    }
+
+    function goToLanding() {
+      playSound('click');
+      selectedCardId = null;
+      showOnlyView('landing-screen');
+      const landing = document.getElementById('landing-screen');
+      landing.classList.remove('animate-view-enter');
+      void landing.offsetWidth;
+      landing.classList.add('animate-view-enter');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openDashboard() {
+      playSound('pickup');
+      selectedCardId = null;
+      showOnlyView('dashboard-screen');
+      renderDashboardCards(true);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function renderDashboardCards(animateEntrance = true) {
+      const grid = document.getElementById('dashboard-cards-grid');
+      const totalScoreEl = document.getElementById('dashboard-total-score');
+      const totalBarEl = document.getElementById('dashboard-total-bar');
+      if (!grid) return;
+
+      const totalScore = getTotalScore();
+      const totalPct = Math.min(100, Math.round((totalScore / 17) * 100));
+      if (totalScoreEl) totalScoreEl.textContent = `${totalScore.toFixed(1)} / 17.0 Marks`;
+      if (totalBarEl) totalBarEl.style.width = `${totalPct}%`;
+
+      grid.innerHTML = QUESTIONS.map((q, idx) => {
+        const score = getQuestionScore(q);
+        const placedCount = Object.keys(appState[q.id].placements).length;
+        const totalSlots = getAllSlots(q).length;
+        const pct = Math.min(100, Math.round((score / q.marks) * 100));
+        const isComplete = score === q.marks;
+        const isInProgress = !isComplete && placedCount > 0;
+
+        let statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold t-bg-subtle t-text-muted border t-border">Not Started</span>`;
+        if (isComplete) {
+          statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-emerald-500/15 text-emerald-600 border border-emerald-500/30">✓ Mastered</span>`;
+        } else if (isInProgress) {
+          statusBadge = `<span class="px-2.5 py-0.5 rounded-full text-[11px] font-bold t-primary-soft border">In Progress (${placedCount}/${totalSlots})</span>`;
+        }
+
+        const staggerClass = animateEntrance ? 'animate-card-stagger' : '';
+        const staggerDelay = animateEntrance ? `style="animation-delay: ${idx * 65}ms;"` : '';
+
+        return `
+          <button onclick="startPractice(${idx})"
+                  ${staggerDelay}
+                  class="${staggerClass} dashboard-card t-bg-card rounded-3xl border t-border p-6 text-left flex flex-col justify-between gap-5 group shadow-2xs">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-4">
+                <div class="flex items-center gap-2">
+                  <span class="px-2.5 py-1 rounded-xl text-xs font-extrabold t-primary-bg">${q.id}</span>
+                  <span class="text-xs font-semibold t-text-muted flex items-center gap-1">
+                    <span>${q.categoryIcon}</span>
+                    <span>${q.categoryLabel}</span>
+                  </span>
+                </div>
+                ${statusBadge}
+              </div>
+
+              <h3 class="text-base sm:text-lg font-extrabold t-text-main leading-snug mb-1 group-hover:t-primary-text transition-colors">
+                ${q.dashboardTitle}
+              </h3>
+              <p class="text-xs font-medium t-text-muted">
+                ${q.marks} Marks &bull; ${totalSlots} Items
+              </p>
+            </div>
+
+            <div class="pt-3 border-t t-border">
+              <div class="flex items-center justify-between text-xs font-bold mb-1.5">
+                <span class="t-text-secondary">${score.toFixed(1)} / ${q.marks.toFixed(1)} Marks</span>
+                <span class="t-primary-text flex items-center gap-1">
+                  <span>${isComplete ? 'Review' : 'Practice'}</span>
+                  <span class="transition-transform duration-200 group-hover:translate-x-1">→</span>
+                </span>
+              </div>
+              <div class="w-full h-1.5 rounded-full t-bg-subtle overflow-hidden">
+                <div class="h-full ${isComplete ? 'bg-emerald-500' : 't-primary-bg'} rounded-full transition-all duration-500" style="width: ${pct}%;"></div>
+              </div>
+            </div>
+          </button>
+        `;
+      }).join('');
+    }
+
+    function triggerWorkspaceEnterAnimation() {
+      const mainEl = document.getElementById('practice-main');
+      if (!mainEl) return;
+      mainEl.classList.remove('animate-view-enter');
+      void mainEl.offsetWidth;
+      mainEl.classList.add('animate-view-enter');
+    }
+
+    function startPractice(questionIdx = 0) {
+      playSound('pickup');
+      currentQuestionIndex = questionIdx;
+      selectedCardId = null;
+      showOnlyView('practice-screen');
+      document.getElementById('feedback-banner').classList.add('hidden');
+      triggerWorkspaceEnterAnimation();
+      renderCurrentQuestion();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // =========================================================================
+    // 5. MODE & QUESTION CONTROLS
+    // =========================================================================
+    function updateModalModeButtons() {
+      const mInstant = document.getElementById('modal-mode-instant');
+      const mExam = document.getElementById('modal-mode-exam');
+      if (!mInstant || !mExam) return;
+
+      if (feedbackMode === 'instant') {
+        mInstant.className = 'flex-1 py-1.5 rounded-lg text-xs font-bold transition t-primary-bg shadow-2xs';
+        mExam.className = 'flex-1 py-1.5 rounded-lg text-xs font-bold transition t-text-secondary';
+      } else {
+        mExam.className = 'flex-1 py-1.5 rounded-lg text-xs font-bold transition t-primary-bg shadow-2xs';
+        mInstant.className = 'flex-1 py-1.5 rounded-lg text-xs font-bold transition t-text-secondary';
+      }
+    }
+
+    function setMode(mode) {
+      playSound('click');
+      feedbackMode = mode;
+      updateModalModeButtons();
+      renderCurrentQuestion();
+    }
+
+    function switchQuestion(index) {
+      playSound('click');
+      currentQuestionIndex = index;
+      selectedCardId = null;
+      document.getElementById('feedback-banner').classList.add('hidden');
+      triggerWorkspaceEnterAnimation();
+      renderCurrentQuestion();
+    }
+
+    function goToNextQuestion() {
+      if (currentQuestionIndex < QUESTIONS.length - 1) {
+        switchQuestion(currentQuestionIndex + 1);
+      } else {
+        openDashboard();
+      }
+    }
+
+    function shuffleCurrentBank() {
+      playSound('pickup');
+      const q = QUESTIONS[currentQuestionIndex];
+      appState[q.id].bankOrder = shuffleArray(appState[q.id].bankOrder);
+      renderAnswerBank();
+    }
+
+    function checkCurrentQuestion() {
+      const q = QUESTIONS[currentQuestionIndex];
+      appState[q.id].checked = true;
+      const score = getQuestionScore(q);
+
+      const banner = document.getElementById('feedback-banner');
+      const bannerText = document.getElementById('feedback-banner-text');
+      banner.className = 'mb-4 px-4 py-2.5 rounded-xl border text-xs sm:text-sm font-semibold flex items-center justify-between animate-view-enter';
+
+      if (score === q.marks) {
+        playSound('complete');
+        spawnConfetti();
+        banner.classList.add('bg-emerald-500/15', 'border-emerald-500/30', 'text-emerald-600');
+        bannerText.textContent = `🎉 Perfect! ${score.toFixed(1)} / ${q.marks.toFixed(1)} marks`;
+      } else {
+        playSound('drop');
+        banner.classList.add('t-primary-soft');
+        bannerText.textContent = `Score: ${score.toFixed(1)} / ${q.marks.toFixed(1)} marks`;
+      }
+
+      renderCurrentQuestion();
+    }
+
+    function showAllAnswers() {
+      playSound('click');
+      const q = QUESTIONS[currentQuestionIndex];
+      const state = appState[q.id];
+      const slots = getAllSlots(q);
+
+      state.placements = {};
+      state.bankOrder = [];
+      state.checked = true;
+
+      slots.forEach((slot, idx) => {
+        state.placements[slot.id] = `${q.id}_card_${idx}`;
+      });
+
+      selectedCardId = null;
+      document.getElementById('feedback-banner').classList.add('hidden');
+      renderCurrentQuestion();
+    }
+
+    function resetCurrentQuestion() {
+      playSound('pickup');
+      const q = QUESTIONS[currentQuestionIndex];
+      initQuestionState(q);
+      selectedCardId = null;
+      document.getElementById('feedback-banner').classList.add('hidden');
+      triggerWorkspaceEnterAnimation();
+      renderCurrentQuestion();
+    }
+
+    function resetAllQuestions(showFeedback = false) {
+      playSound('pickup');
+      QUESTIONS.forEach(initQuestionState);
+      selectedCardId = null;
+      renderDashboardCards(false);
+
+      if (!document.getElementById('practice-screen').classList.contains('hidden')) {
+        document.getElementById('feedback-banner').classList.add('hidden');
+        triggerWorkspaceEnterAnimation();
+        renderCurrentQuestion();
+      } else if (showFeedback) {
+        const btn = document.getElementById('dashboard-reset-btn');
+        if (btn) {
+          const orig = btn.innerHTML;
+          btn.innerHTML = '<span>✓</span><span>Progress Reset!</span>';
+          setTimeout(() => { btn.innerHTML = orig; }, 1100);
+        }
+      }
+    }
+
+    // =========================================================================
+    // 6. DRAG-AND-DROP & TAP-TO-PLACE WITH SOUND EFFECTS
+    // =========================================================================
+    function handleDragStart(event, cardId) {
+      draggedCardId = cardId;
+      selectedCardId = null;
+      playSound('pickup');
+      event.dataTransfer.setData('text/plain', cardId);
+      event.dataTransfer.effectAllowed = 'move';
+      setTimeout(() => {
+        const el = document.getElementById(`card_${cardId}`);
+        if (el) el.classList.add('dragging');
+      }, 0);
+    }
+
+    function handleDragEnd(event, cardId) {
+      draggedCardId = null;
+      const el = document.getElementById(`card_${cardId}`);
+      if (el) el.classList.remove('dragging');
+      document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+    }
+
+    function handleDragOver(event) {
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'move';
+      event.currentTarget.classList.add('drag-over');
+    }
+
+    function handleDragLeave(event) {
+      event.currentTarget.classList.remove('drag-over');
+    }
+
+    function handleDropToSlot(event, targetSlotId) {
+      event.preventDefault();
+      event.currentTarget.classList.remove('drag-over');
+      const cardId = event.dataTransfer.getData('text/plain') || draggedCardId;
+      if (!cardId) return;
+      placeCardInSlot(cardId, targetSlotId);
+    }
+
+    function handleDropToBank(event) {
+      event.preventDefault();
+      event.currentTarget.classList.remove('drag-over');
+      const cardId = event.dataTransfer.getData('text/plain') || draggedCardId;
+      if (!cardId) return;
+      returnCardToBank(cardId);
+    }
+
+    function selectCard(cardId, event) {
+      if (event) event.stopPropagation();
+      playSound('pickup');
+      selectedCardId = selectedCardId === cardId ? null : cardId;
+      renderCurrentQuestion();
+    }
+
+    function handleSlotClick(targetSlotId) {
+      const q = QUESTIONS[currentQuestionIndex];
+      const state = appState[q.id];
+
+      if (selectedCardId) {
+        placeCardInSlot(selectedCardId, targetSlotId);
+        selectedCardId = null;
+      } else if (state.placements[targetSlotId]) {
+        selectCard(state.placements[targetSlotId]);
+      }
+    }
+
+    function placeCardInSlot(cardId, targetSlotId) {
+      const q = QUESTIONS[currentQuestionIndex];
+      const state = appState[q.id];
+      const prevScore = getQuestionScore(q);
+
+      let sourceSlotId = null;
+      for (const [sId, cId] of Object.entries(state.placements)) {
+        if (cId === cardId) {
+          sourceSlotId = sId;
+          break;
+        }
+      }
+
+      const existingTargetCardId = state.placements[targetSlotId];
+      state.bankOrder = state.bankOrder.filter(id => id !== cardId);
+
+      if (sourceSlotId) {
+        if (existingTargetCardId) {
+          state.placements[sourceSlotId] = existingTargetCardId;
+        } else {
+          delete state.placements[sourceSlotId];
+        }
+      } else if (existingTargetCardId) {
+        state.bankOrder.push(existingTargetCardId);
+      }
+
+      state.placements[targetSlotId] = cardId;
+
+      if (feedbackMode === 'exam') {
+        state.checked = false;
+        playSound('drop');
+      } else {
+        const targetSlot = getAllSlots(q).find(s => s.id === targetSlotId);
+        const correct = targetSlot && isSlotCorrect(q, targetSlot);
+        const newScore = getQuestionScore(q);
+        if (correct && newScore === q.marks && prevScore < q.marks) {
+          playSound('complete');
+          spawnConfetti();
+        } else if (correct) {
+          playSound('correct');
+        } else {
+          playSound('wrong');
+        }
+      }
+
+      renderCurrentQuestion(targetSlotId);
+    }
+
+    function returnCardToBank(cardId, event) {
+      if (event) event.stopPropagation();
+      playSound('drop');
+      const q = QUESTIONS[currentQuestionIndex];
+      const state = appState[q.id];
+
+      for (const [sId, cId] of Object.entries(state.placements)) {
+        if (cId === cardId) delete state.placements[sId];
+      }
+
+      if (!state.bankOrder.includes(cardId)) {
+        state.bankOrder.push(cardId);
+      }
+
+      if (selectedCardId === cardId) selectedCardId = null;
+      if (feedbackMode === 'exam') state.checked = false;
+
+      renderCurrentQuestion();
+    }
+
+    // =========================================================================
+    // 7. CLEAN RENDERERS (TABS, TABLES, SVG DIAGRAMS, BANK)
+    // =========================================================================
+    function renderTabs() {
+      const nav = document.getElementById('question-tabs');
+      nav.innerHTML = QUESTIONS.map((q, idx) => {
+        const isActive = idx === currentQuestionIndex;
+        const score = getQuestionScore(q);
+        const isComplete = score === q.marks;
+
+        return `
+          <button onclick="switchQuestion(${idx})"
+            class="px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition-all flex items-center gap-1.5 border ${
+              isActive
+                ? 't-primary-bg border-transparent shadow-2xs'
+                : 't-bg-subtle t-text-secondary t-border hover:opacity-85'
+            }">
+            <span>${q.tabLabel}</span>
+            ${isComplete ? '<span class="text-[10px]">✓</span>' : ''}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function renderSlotContent(q, slot, recentlyPlacedSlotId, compact = false) {
+      const state = appState[q.id];
+      const placedCardId = state.placements[slot.id];
+      const showValidation = feedbackMode === 'instant' || state.checked;
+
+      if (!placedCardId) {
+        const highlightSelect = selectedCardId
+          ? 't-primary-soft border-current ring-2 ring-current/20 cursor-pointer'
+          : 't-border-strong t-bg-subtle hover:opacity-85';
+
+        return `
+          <div ondragover="handleDragOver(event)"
+               ondragleave="handleDragLeave(event)"
+               ondrop="handleDropToSlot(event, '${slot.id}')"
+               onclick="handleSlotClick('${slot.id}')"
+               class="drop-slot w-full ${compact ? 'min-h-[42px] px-3 py-1.5' : 'min-h-[64px] p-3'} rounded-xl border border-dashed ${highlightSelect} flex items-center justify-center text-center">
+            <span class="text-xs font-medium ${selectedCardId ? 't-primary-text font-bold' : 't-text-muted'}">
+              ${selectedCardId ? 'Place here' : (compact ? slot.label : 'Drop here')}
+            </span>
+          </div>
+        `;
+      }
+
+      const card = state.cards[placedCardId];
+      const correct = isSlotCorrect(q, slot);
+      const isSelected = selectedCardId === placedCardId;
+      const animClass = recentlyPlacedSlotId === slot.id
+        ? (showValidation ? (correct ? 'animate-pop' : 'animate-shake') : 'animate-pop')
+        : '';
+
+      let statusClasses = 't-bg-card t-border-strong t-text-main shadow-2xs';
+      let statusIcon = '';
+
+      if (showValidation) {
+        if (correct) {
+          statusClasses = 'bg-emerald-500/15 border-emerald-500 t-text-main';
+          statusIcon = `<span class="w-4 h-4 rounded-full bg-emerald-600 text-white text-[10px] font-bold flex items-center justify-center shrink-0">✓</span>`;
+        } else {
+          statusClasses = 'bg-rose-500/15 border-rose-500 t-text-main';
+          statusIcon = `<span class="w-4 h-4 rounded-full bg-rose-600 text-white text-[10px] font-bold flex items-center justify-center shrink-0">✕</span>`;
+        }
+      }
+
+      if (isSelected) {
+        statusClasses += ' ring-2 ring-amber-400';
+      }
+
+      return `
+        <div id="card_${placedCardId}"
+             draggable="true"
+             ondragstart="handleDragStart(event, '${placedCardId}')"
+             ondragend="handleDragEnd(event, '${placedCardId}')"
+             ondragover="handleDragOver(event)"
+             ondragleave="handleDragLeave(event)"
+             ondrop="handleDropToSlot(event, '${slot.id}')"
+             onclick="handleSlotClick('${slot.id}')"
+             class="drop-slot draggable-card ${animClass} w-full ${compact ? 'px-2.5 py-1.5' : 'p-3'} rounded-xl border-2 ${statusClasses} flex items-center justify-between gap-2 text-left">
+          <div class="flex items-center gap-2 min-w-0">
+            ${statusIcon}
+            <span class="${compact ? 'text-xs font-semibold' : 'text-xs sm:text-sm font-medium'} leading-snug">${card.text}</span>
+          </div>
+          <button onclick="returnCardToBank('${placedCardId}', event)"
+                  title="Remove"
+                  class="w-5 h-5 rounded-full t-bg-muted hover:opacity-80 t-text-main flex items-center justify-center text-xs font-bold shrink-0 transition">
+            ×
+          </button>
+        </div>
+      `;
+    }
+
+    function renderTableQuestion(q, recentlyPlacedSlotId) {
+      const stage = document.getElementById('question-stage');
+      stage.innerHTML = `
+        <div class="min-w-[600px]">
+          <table class="w-full border-collapse rounded-2xl overflow-hidden border t-border">
+            <thead>
+              <tr class="t-table-header">
+                <th class="w-1/5 py-3.5 px-4 text-left text-xs font-bold uppercase tracking-wider border-r border-white/15">
+                  ${q.headers[0]}
+                </th>
+                <th class="w-2/5 py-3.5 px-4 text-left text-xs font-bold uppercase tracking-wider border-r border-white/15">
+                  ${q.headers[1]}
+                </th>
+                <th class="w-2/5 py-3.5 px-4 text-left text-xs font-bold uppercase tracking-wider">
+                  ${q.headers[2]}
+                </th>
+              </tr>
+            </thead>
+            <tbody class="divide-y t-border">
+              ${q.rows.map((row, rIdx) => `
+                <tr class="${rIdx % 2 === 0 ? 't-bg-card' : 't-bg-subtle'}">
+                  <td class="py-3.5 px-4 font-bold t-text-main text-xs sm:text-sm border-r t-border t-bg-muted align-middle">
+                    ${row.feature}
+                  </td>
+                  <td class="p-2.5 border-r t-border align-middle">
+                    ${renderSlotContent(q, row.slots[0], recentlyPlacedSlotId, false)}
+                  </td>
+                  <td class="p-2.5 align-middle">
+                    ${renderSlotContent(q, row.slots[1], recentlyPlacedSlotId, false)}
+                  </td>
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    }
+
+    function renderDiagramQuestion(q, recentlyPlacedSlotId) {
+      const stage = document.getElementById('question-stage');
+      const ink = 'var(--svg-ink)';
+      const accent = 'var(--svg-accent)';
+      const fill = 'var(--svg-fill)';
+
+      if (q.diagramKey === 'bacteriophage') {
+        stage.innerHTML = `
+          <div class="w-full max-w-3xl mx-auto grid grid-cols-1 md:grid-cols-12 gap-4 items-center">
+            <div class="md:col-span-4 flex flex-col justify-between gap-5 order-2 md:order-1">
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">B</div>
+                ${renderSlotContent(q, q.slots[1], recentlyPlacedSlotId, true)}
+              </div>
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">F</div>
+                ${renderSlotContent(q, q.slots[5], recentlyPlacedSlotId, true)}
+              </div>
+            </div>
+
+            <div class="md:col-span-4 flex justify-center order-1 md:order-2">
+              <svg viewBox="0 0 320 380" class="w-full max-w-[270px] h-auto">
+                <polygon points="160,25 225,62 225,138 160,175 95,138 95,62"
+                         fill="${fill}" stroke="${ink}" stroke-width="3.5" stroke-linejoin="round"/>
+                <polyline points="95,62 160,95 225,62" fill="none" stroke="${ink}" stroke-opacity="0.22" stroke-width="1.5"/>
+                <line x1="160" y1="25" x2="160" y2="95" stroke="${ink}" stroke-opacity="0.22" stroke-width="1.5"/>
+                <ellipse cx="160" cy="100" rx="34" ry="30" fill="none" stroke="${ink}" stroke-width="2.5"/>
+                <ellipse cx="160" cy="103" rx="31" ry="27" fill="none" stroke="${ink}" stroke-opacity="0.7" stroke-width="1.8"/>
+                <rect x="148" y="175" width="24" height="16" fill="${fill}" stroke="${ink}" stroke-width="3"/>
+                <rect x="142" y="191" width="36" height="105" fill="${fill}" stroke="${ink}" stroke-width="3"/>
+                ${[204, 217, 230, 243, 256, 269, 282].map(y =>
+                  `<line x1="142" y1="${y}" x2="178" y2="${y}" stroke="${ink}" stroke-width="2"/>`
+                ).join('')}
+                <rect x="128" y="296" width="64" height="10" rx="2" fill="${fill}" stroke="${ink}" stroke-width="3"/>
+                <polyline points="130,304 85,332 52,366" fill="none" stroke="${ink}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="134,306 96,338 78,366" fill="none" stroke="${ink}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="138,306 118,365 106,370" fill="none" stroke="${ink}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="190,304 235,332 268,366" fill="none" stroke="${ink}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="186,306 224,338 242,366" fill="none" stroke="${ink}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+                <polyline points="182,306 202,365 214,370" fill="none" stroke="${ink}" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+
+                <line x1="215" y1="56" x2="290" y2="48" stroke="${accent}" stroke-width="2"/>
+                <circle cx="215" cy="56" r="3.5" fill="${accent}"/>
+                <text x="295" y="53" font-weight="800" font-size="16" fill="${ink}">A</text>
+
+                <line x1="160" y1="100" x2="32" y2="88" stroke="${accent}" stroke-width="2"/>
+                <circle cx="160" cy="100" r="3.5" fill="${accent}"/>
+                <text x="14" y="93" font-weight="800" font-size="16" fill="${ink}">B</text>
+
+                <line x1="172" y1="183" x2="290" y2="175" stroke="${accent}" stroke-width="2"/>
+                <circle cx="172" cy="183" r="3.5" fill="${accent}"/>
+                <text x="295" y="180" font-weight="800" font-size="16" fill="${ink}">C</text>
+
+                <line x1="178" y1="243" x2="290" y2="243" stroke="${accent}" stroke-width="2"/>
+                <circle cx="178" cy="243" r="3.5" fill="${accent}"/>
+                <text x="295" y="248" font-weight="800" font-size="16" fill="${ink}">D</text>
+
+                <line x1="192" y1="301" x2="290" y2="296" stroke="${accent}" stroke-width="2"/>
+                <circle cx="192" cy="301" r="3.5" fill="${accent}"/>
+                <text x="295" y="301" font-weight="800" font-size="16" fill="${ink}">E</text>
+
+                <line x1="94" y1="326" x2="32" y2="318" stroke="${accent}" stroke-width="2"/>
+                <circle cx="94" cy="326" r="3.5" fill="${accent}"/>
+                <text x="14" y="323" font-weight="800" font-size="16" fill="${ink}">F</text>
+              </svg>
+            </div>
+
+            <div class="md:col-span-4 flex flex-col gap-2.5 order-3">
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">A</div>
+                ${renderSlotContent(q, q.slots[0], recentlyPlacedSlotId, true)}
+              </div>
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">C</div>
+                ${renderSlotContent(q, q.slots[2], recentlyPlacedSlotId, true)}
+              </div>
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">D</div>
+                ${renderSlotContent(q, q.slots[3], recentlyPlacedSlotId, true)}
+              </div>
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">E</div>
+                ${renderSlotContent(q, q.slots[4], recentlyPlacedSlotId, true)}
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (q.diagramKey === 'replication') {
+        stage.innerHTML = `
+          <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">A</div>
+                ${renderSlotContent(q, q.slots[0], recentlyPlacedSlotId, true)}
+              </div>
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">B</div>
+                ${renderSlotContent(q, q.slots[1], recentlyPlacedSlotId, true)}
+              </div>
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">C</div>
+                ${renderSlotContent(q, q.slots[2], recentlyPlacedSlotId, true)}
+              </div>
+            </div>
+
+            <div class="t-bg-subtle border t-border rounded-2xl p-2 flex justify-center overflow-x-auto">
+              <svg viewBox="0 0 640 270" class="w-full max-w-[600px] h-auto">
+                <text x="18" y="138" font-size="14" font-weight="700" fill="${ink}">5′</text>
+                <text x="18" y="164" font-size="14" font-weight="700" fill="${ink}">3′</text>
+                <line x1="40" y1="134" x2="175" y2="134" stroke="${ink}" stroke-width="3"/>
+                <line x1="40" y1="158" x2="175" y2="158" stroke="${ink}" stroke-width="3"/>
+                ${[52, 68, 84, 100, 116, 132, 148, 164].map(x =>
+                  `<line x1="${x}" y1="134" x2="${x}" y2="158" stroke="${ink}" stroke-opacity="0.7" stroke-width="1.8"/>`
+                ).join('')}
+
+                <polyline points="175,134 250,62 585,62" fill="none" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>
+                <text x="595" y="66" font-size="14" font-weight="700" fill="${ink}">3′</text>
+                <polyline points="175,158 250,222 585,222" fill="none" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>
+                <text x="595" y="226" font-size="14" font-weight="700" fill="${ink}">5′</text>
+
+                <line x1="255" y1="80" x2="575" y2="80" stroke="${ink}" stroke-width="3"/>
+                ${Array.from({length: 21}, (_, i) => 262 + i * 15).map(x =>
+                  `<line x1="${x}" y1="62" x2="${x}" y2="80" stroke="${ink}" stroke-opacity="0.7" stroke-width="1.5"/>`
+                ).join('')}
+
+                <circle cx="285" cy="75" r="20" fill="${fill}" fill-opacity="0.65" stroke="${ink}" stroke-width="2.5"/>
+                <circle cx="195" cy="146" r="21" fill="${fill}" stroke="${ink}" stroke-width="2.8"/>
+
+                ${[280, 385, 490].map(startX => `
+                  <line x1="${startX}" y1="204" x2="${startX + 85}" y2="204" stroke="${ink}" stroke-width="3"/>
+                  <rect x="${startX}" y="199" width="22" height="10" fill="${ink}"/>
+                  ${[6, 20, 34, 48, 62, 76].map(dx =>
+                    `<line x1="${startX + dx}" y1="204" x2="${startX + dx}" y2="222" stroke="${ink}" stroke-opacity="0.7" stroke-width="1.5"/>`
+                  ).join('')}
+                `).join('')}
+
+                <text x="72" y="236" font-size="13" font-weight="600" fill="${ink}">Fork movement</text>
+                <line x1="185" y1="250" x2="62" y2="250" stroke="${ink}" stroke-width="2.2"/>
+                <polygon points="62,250 71,245 71,255" fill="${ink}"/>
+
+                <line x1="195" y1="125" x2="145" y2="36" stroke="${accent}" stroke-width="2"/>
+                <text x="132" y="28" font-weight="800" font-size="17" fill="${ink}">A</text>
+
+                <line x1="285" y1="55" x2="285" y2="36" stroke="${accent}" stroke-width="2"/>
+                <text x="279" y="28" font-weight="800" font-size="17" fill="${ink}">B</text>
+
+                <line x1="465" y1="80" x2="465" y2="36" stroke="${accent}" stroke-width="2"/>
+                <circle cx="465" cy="80" r="3" fill="${accent}"/>
+                <text x="459" y="28" font-weight="800" font-size="17" fill="${ink}">C</text>
+
+                <polyline points="280,186 280,176 575,176 575,186" fill="none" stroke="${ink}" stroke-width="2"/>
+                <line x1="428" y1="176" x2="428" y2="155" stroke="${accent}" stroke-width="2"/>
+                <text x="422" y="148" font-weight="800" font-size="17" fill="${ink}">D</text>
+
+                <line x1="291" y1="209" x2="262" y2="252" stroke="${accent}" stroke-width="2"/>
+                <text x="245" y="264" font-weight="800" font-size="17" fill="${ink}">F</text>
+
+                <line x1="435" y1="204" x2="435" y2="252" stroke="${accent}" stroke-width="2"/>
+                <circle cx="435" cy="204" r="3" fill="${accent}"/>
+                <text x="429" y="266" font-weight="800" font-size="17" fill="${ink}">E</text>
+              </svg>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">D</div>
+                ${renderSlotContent(q, q.slots[3], recentlyPlacedSlotId, true)}
+              </div>
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">E</div>
+                ${renderSlotContent(q, q.slots[4], recentlyPlacedSlotId, true)}
+              </div>
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">F</div>
+                ${renderSlotContent(q, q.slots[5], recentlyPlacedSlotId, true)}
+              </div>
+            </div>
+          </div>
+        `;
+      } else if (q.diagramKey === 'transcription') {
+        stage.innerHTML = `
+          <div class="flex flex-col gap-4">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">A</div>
+                ${renderSlotContent(q, q.slots[0], recentlyPlacedSlotId, true)}
+              </div>
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">B</div>
+                ${renderSlotContent(q, q.slots[1], recentlyPlacedSlotId, true)}
+              </div>
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">D</div>
+                ${renderSlotContent(q, q.slots[3], recentlyPlacedSlotId, true)}
+              </div>
+            </div>
+
+            <div class="t-bg-subtle border t-border rounded-2xl p-2 flex justify-center overflow-x-auto">
+              <svg viewBox="0 0 640 310" class="w-full max-w-[600px] h-auto">
+                <text x="25" y="130" font-size="14" font-weight="700" fill="${ink}">5′</text>
+                <text x="25" y="160" font-size="14" font-weight="700" fill="${ink}">3′</text>
+                <line x1="48" y1="126" x2="185" y2="126" stroke="${ink}" stroke-width="3"/>
+                <line x1="48" y1="154" x2="185" y2="154" stroke="${ink}" stroke-width="3"/>
+                ${[60, 76, 92, 108, 124, 140, 156, 172].map(x =>
+                  `<line x1="${x}" y1="126" x2="${x}" y2="154" stroke="${ink}" stroke-opacity="0.7" stroke-width="1.8"/>`
+                ).join('')}
+
+                <polyline points="185,126 245,82 395,82 455,126 575,126" fill="none" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>
+                <polyline points="185,154 245,198 395,198 455,154 575,154" fill="none" stroke="${ink}" stroke-width="3" stroke-linejoin="round"/>
+
+                ${[468, 484, 500, 516, 532, 548, 564].map(x =>
+                  `<line x1="${x}" y1="126" x2="${x}" y2="154" stroke="${ink}" stroke-opacity="0.7" stroke-width="1.8"/>`
+                ).join('')}
+                <text x="584" y="130" font-size="14" font-weight="700" fill="${ink}">3′</text>
+                <text x="584" y="160" font-size="14" font-weight="700" fill="${ink}">5′</text>
+
+                <ellipse cx="320" cy="140" rx="92" ry="74" fill="${fill}" fill-opacity="0.45" stroke="${ink}" stroke-width="2.8"/>
+
+                <polyline points="78,242 135,256 205,235 268,180 365,180" fill="none" stroke="${ink}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <text x="72" y="228" font-size="14" font-weight="700" fill="${ink}">5′</text>
+                <text x="368" y="174" font-size="14" font-weight="700" fill="${ink}">3′</text>
+
+                ${[274, 288, 302, 316, 330, 344, 358].map(x =>
+                  `<line x1="${x}" y1="180" x2="${x}" y2="198" stroke="${ink}" stroke-opacity="0.7" stroke-width="1.6"/>`
+                ).join('')}
+
+                <g transform="translate(465, 232)">
+                  <circle cx="0" cy="0" r="14" fill="${fill}" stroke="${ink}" stroke-width="2.2"/>
+                  <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="800" fill="${ink}">A</text>
+                </g>
+                <g transform="translate(448, 272)">
+                  <circle cx="0" cy="0" r="14" fill="${fill}" stroke="${ink}" stroke-width="2.2"/>
+                  <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="800" fill="${ink}">C</text>
+                </g>
+                <g transform="translate(518, 256)">
+                  <circle cx="0" cy="0" r="14" fill="${fill}" stroke="${ink}" stroke-width="2.2"/>
+                  <text x="0" y="5" text-anchor="middle" font-size="13" font-weight="800" fill="${ink}">U</text>
+                </g>
+
+                <polyline points="82,112 82,100 148,100 148,112" fill="none" stroke="${ink}" stroke-width="2"/>
+                <line x1="115" y1="100" x2="108" y2="42" stroke="${accent}" stroke-width="2"/>
+                <text x="98" y="34" font-weight="800" font-size="17" fill="${ink}">A</text>
+
+                <line x1="358" y1="73" x2="348" y2="38" stroke="${accent}" stroke-width="2"/>
+                <circle cx="358" cy="73" r="3" fill="${accent}"/>
+                <text x="340" y="30" font-weight="800" font-size="17" fill="${ink}">B</text>
+
+                <line x1="528" y1="126" x2="546" y2="66" stroke="${accent}" stroke-width="2"/>
+                <circle cx="528" cy="126" r="3" fill="${accent}"/>
+                <text x="542" y="58" font-weight="800" font-size="17" fill="${ink}">D</text>
+
+                <line x1="518" y1="154" x2="554" y2="195" stroke="${accent}" stroke-width="2"/>
+                <circle cx="518" cy="154" r="3" fill="${accent}"/>
+                <text x="556" y="208" font-weight="800" font-size="17" fill="${ink}">C</text>
+
+                <line x1="162" y1="248" x2="168" y2="282" stroke="${accent}" stroke-width="2"/>
+                <circle cx="162" cy="248" r="3" fill="${accent}"/>
+                <text x="163" y="300" font-weight="800" font-size="17" fill="${ink}">E</text>
+
+                <line x1="532" y1="262" x2="565" y2="282" stroke="${accent}" stroke-width="2"/>
+                <text x="570" y="294" font-weight="800" font-size="17" fill="${ink}">F</text>
+              </svg>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">E</div>
+                ${renderSlotContent(q, q.slots[4], recentlyPlacedSlotId, true)}
+              </div>
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">C</div>
+                ${renderSlotContent(q, q.slots[2], recentlyPlacedSlotId, true)}
+              </div>
+              <div class="t-bg-subtle p-2.5 rounded-xl border t-border">
+                <div class="text-xs font-extrabold t-primary-text mb-1">F</div>
+                ${renderSlotContent(q, q.slots[5], recentlyPlacedSlotId, true)}
+              </div>
+            </div>
+          </div>
+        `;
+      }
+    }
+
+    function renderAnswerBank() {
+      const q = QUESTIONS[currentQuestionIndex];
+      const state = appState[q.id];
+      const bankEl = document.getElementById('answer-bank');
+      const countEl = document.getElementById('bank-count');
+      const hintEl = document.getElementById('selected-hint');
+
+      countEl.textContent = state.bankOrder.length;
+      hintEl.classList.toggle('hidden', !selectedCardId);
+
+      if (state.bankOrder.length === 0) {
+        bankEl.innerHTML = `
+          <div class="py-10 text-center t-text-muted text-xs font-semibold">
+            ✓ All placed
+          </div>
+        `;
+        return;
+      }
+
+      bankEl.innerHTML = state.bankOrder.map(cardId => {
+        const card = state.cards[cardId];
+        const isSelected = selectedCardId === cardId;
+
+        return `
+          <div id="card_${cardId}"
+               draggable="true"
+               ondragstart="handleDragStart(event, '${cardId}')"
+               ondragend="handleDragEnd(event, '${cardId}')"
+               onclick="selectCard('${cardId}', event)"
+               class="draggable-card p-3 rounded-xl border text-left text-xs sm:text-sm font-medium leading-snug ${
+                 isSelected
+                   ? 't-primary-bg border-transparent shadow-md ring-2 ring-amber-400'
+                   : 't-bg-card t-text-main t-border hover:border-current'
+               }">
+            ${card.text}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderCurrentQuestion(recentlyPlacedSlotId = null) {
+      const q = QUESTIONS[currentQuestionIndex];
+
+      document.getElementById('q-badge').textContent = q.id;
+      document.getElementById('q-marks-badge').textContent = `${q.marks} marks`;
+      document.getElementById('q-title').textContent = q.title;
+
+      const nextBtn = document.getElementById('next-q-btn');
+      if (nextBtn) {
+        nextBtn.textContent = currentQuestionIndex < QUESTIONS.length - 1 ? 'Next Question →' : 'Finish →';
+      }
+
+      const checkBtn = document.getElementById('check-btn');
+      checkBtn.classList.toggle('hidden', feedbackMode === 'instant');
+
+      if (q.type === 'table') {
+        renderTableQuestion(q, recentlyPlacedSlotId);
+      } else {
+        renderDiagramQuestion(q, recentlyPlacedSlotId);
+      }
+
+      renderAnswerBank();
+      updateScoresUI();
+    }
+
+    // Initialize on load
+    applyTheme(currentTheme);
+    updateSoundButtonsUI();
+    renderDashboardCards(false);
+    renderCurrentQuestion();
+  </script>
+</body>
+</html>
